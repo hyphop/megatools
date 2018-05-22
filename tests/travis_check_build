@@ -1,0 +1,13 @@
+#!/bin/sh
+
+## hyphop ##
+
+echo "[i] $0 BEGIN"
+
+./autogen.sh
+./configure --disable-docs
+make
+
+echo "[i] $0 END"
+
+exit 0

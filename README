@@ -1,4 +1,4 @@
-megatools - command line client application for Mega
+megatools - command line client application for Mega [![Build Status](https://travis-ci.com/hyphop/megatools.svg?branch=master)](https://travis-ci.com/hyphop/megatools)
 ====================================================
 
 Megatools is a collection of programs for accessing Mega service from
