@@ -1,0 +1,15 @@
+#!/bin/sh
+
+## hyphop ##
+
+[ -d bin ] || mkdir bin
+cp megash bin/
+cd bin
+
+for c in copy df dl get ls mkdir put reg rm ; do
+
+    echo "[i] make symlink $c"
+    
+    ln -sf megash mega$c
+
+done

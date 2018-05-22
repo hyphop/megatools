@@ -19,17 +19,20 @@
 
 #include "tools.h"
 
-static GOptionEntry entries[] =
+static GOptionEntry entries_rm[] =
 {
   { NULL }
 };
 
-int main(int ac, char* av[])
+#define  RM "1"
+#include "main.h"
+
+int main_rm(int ac, char* av[])
 {
   gc_error_free GError *local_err = NULL;
   static mega_session* s;
 
-  tool_init(&ac, &av, "- remove files from mega.nz", entries, TOOL_INIT_AUTH);
+  tool_init(&ac, &av, "- remove files from mega.nz", entries_rm, TOOL_INIT_AUTH);
 
   if (ac < 2)
   {
@@ -63,3 +66,5 @@ int main(int ac, char* av[])
   tool_fini(s);
   return status;
 }
+
+#include "main2.h"

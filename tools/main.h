@@ -1,0 +1,9 @@
+int main_copy (int ac, char* av[]);
+int main_df (int ac, char* av[]);
+int main_get (int ac, char* av[]);
+int main_ls (int ac, char* av[]);
+int main_mkdir (int ac, char* av[]);
+int main_put (int ac, char* av[]);
+int main_reg (int ac, char* av[]);
+int main_rm (int ac, char* av[]);
+int main_dl (int ac, char* av[]);

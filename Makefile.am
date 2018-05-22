@@ -42,7 +42,7 @@ LDADD = \
 	$(OPENSSL_LIBS) \
 	$(LIBCURL_LIBS)
 
-bin_PROGRAMS = megadf megadl megaget megals megamkdir megaput megareg megarm megacopy
+bin_PROGRAMS = megadf megadl megaget megals megamkdir megaput megareg megarm megacopy megash
 
 megadf_SOURCES     = tools/df.c
 megadl_SOURCES     = tools/dl.c
@@ -53,6 +53,7 @@ megaput_SOURCES    = tools/put.c
 megareg_SOURCES    = tools/reg.c
 megarm_SOURCES     = tools/rm.c
 megacopy_SOURCES   = tools/copy.c
+megash_SOURCES   = tools/sh.c
 
 # }}}
 # {{{ docs

@@ -21,16 +21,19 @@
 
 static mega_session* s;
 
-static GOptionEntry entries[] =
+static GOptionEntry entries_mkdir[] =
 {
   { NULL }
 };
 
-int main(int ac, char* av[])
+#define MK "1"
+#include "main.h"
+
+int main_mkdir(int ac, char* av[])
 {
   gc_error_free GError *local_err = NULL;
 
-  tool_init(&ac, &av, "- create directories at mega.nz", entries, TOOL_INIT_AUTH);
+  tool_init(&ac, &av, "- create directories at mega.nz", entries_mkdir, TOOL_INIT_AUTH);
 
   if (ac < 2)
   {
@@ -64,3 +67,4 @@ int main(int ac, char* av[])
   tool_fini(s);
   return status;
 }
+#include "main2.h"

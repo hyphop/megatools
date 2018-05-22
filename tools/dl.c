@@ -24,11 +24,20 @@
 #endif
 
 static gchar* opt_path = ".";
+
+#if !defined OPS
 static gboolean opt_stream = FALSE;
+#define OPS "1"
+#endif
+
+#if !defined OPN
 static gboolean opt_noprogress = FALSE;
+#define OPN "1"
+#endif
+
 static gboolean opt_print_names = FALSE;
 
-static GOptionEntry entries[] =
+static GOptionEntry entries_dl[] =
 {
   { "path",          '\0',   0, G_OPTION_ARG_FILENAME,  &opt_path,        "Local directory or file name, to save data to",  "PATH" },
   { "no-progress",   '\0',   0, G_OPTION_ARG_NONE,      &opt_noprogress,  "Disable progress bar",                           NULL  },
@@ -36,10 +45,14 @@ static GOptionEntry entries[] =
   { NULL }
 };
 
+#if !defined GC
 static gchar* cur_file = NULL;
+#define GC "1"
+#endif
+
 static mega_session* s;
 
-static gboolean status_callback(mega_status_data* data, gpointer userdata)
+static gboolean status_callback_dl(mega_status_data* data, gpointer userdata)
 {
   if (opt_stream && data->type == MEGA_STATUS_DATA)
   {
@@ -141,14 +154,17 @@ static gboolean dl_sync_dir(mega_node* node, GFile* file, const gchar* remote_pa
   return status;
 }
 
-int main(int ac, char* av[])
+#define DL "1"
+#include "main.h"
+
+int main_dl(int ac, char* av[])
 {
   gc_error_free GError *local_err = NULL;
   gc_regex_unref GRegex *file_regex = NULL, *folder_regex = NULL;
   gint i;
   int status = 0;
 
-  tool_init(&ac, &av, "- download exported files from mega.nz", entries, TOOL_INIT_AUTH_OPTIONAL);
+  tool_init(&ac, &av, "- download exported files from mega.nz", entries_dl, TOOL_INIT_AUTH_OPTIONAL);
 
   if (!strcmp(opt_path, "-"))
   {
@@ -186,7 +202,7 @@ int main(int ac, char* av[])
 
   s = tool_start_session(TOOL_SESSION_OPEN | TOOL_SESSION_AUTH_ONLY | TOOL_SESSION_AUTH_OPTIONAL);
 
-  mega_session_watch_status(s, status_callback, NULL);
+  mega_session_watch_status(s, status_callback_dl, NULL);
 
   // process links
   for (i = 1; i < ac; i++)
@@ -246,7 +262,7 @@ int main(int ac, char* av[])
       }
       else
       {
-        mega_session_watch_status(s, status_callback, NULL);
+        mega_session_watch_status(s, status_callback_dl, NULL);
 
         GSList* l = mega_session_ls(s, "/", FALSE);
         if (g_slist_length(l) == 1)
@@ -284,3 +300,4 @@ int main(int ac, char* av[])
   tool_fini(s);
   return status;
 }
+#include "main2.h"

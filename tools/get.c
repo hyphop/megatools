@@ -19,20 +19,31 @@
 
 #include "tools.h"
 
-static gchar* opt_path = ".";
-static gboolean opt_stream = FALSE;
-static gboolean opt_noprogress = FALSE;
+static gchar* opt_path_get = ".";
 
-static GOptionEntry entries[] =
+#if !defined OPS
+static gboolean opt_stream = FALSE;
+#define OPS "1"
+#endif
+
+#if !defined OPN
+static gboolean opt_noprogress = FALSE;
+#define OPN "1"
+#endif
+
+static GOptionEntry entries_get[] =
 {
-  { "path",          '\0',   0, G_OPTION_ARG_FILENAME,  &opt_path,  "Local directory or file name, to save data to",  "PATH" },
+  { "path",          '\0',   0, G_OPTION_ARG_FILENAME,  &opt_path_get,  "Local directory or file name, to save data to",  "PATH" },
   { "no-progress",   '\0',   0, G_OPTION_ARG_NONE,    &opt_noprogress,  "Disable progress bar",   NULL},
   { NULL }
 };
 
+#if !defined GC
 static gchar* cur_file = NULL;
+#define GC "1"
+#endif
 
-static gboolean status_callback(mega_status_data* data, gpointer userdata)
+static gboolean status_callback_get(mega_status_data* data, gpointer userdata)
 {
   if (opt_stream && data->type == MEGA_STATUS_DATA)
   {
@@ -51,15 +62,18 @@ static gboolean status_callback(mega_status_data* data, gpointer userdata)
   return FALSE;
 }
 
-int main(int ac, char* av[])
+#define GET "1"
+#include "main.h"
+
+int main_get(int ac, char* av[])
 {
   gc_error_free GError *local_err = NULL;
   mega_session* s;
   gint i, status = 0;
 
-  tool_init(&ac, &av, "- download individual files from mega.nz", entries, TOOL_INIT_AUTH);
+  tool_init(&ac, &av, "- download individual files from mega.nz", entries_get, TOOL_INIT_AUTH);
 
-  if (!strcmp(opt_path, "-"))
+  if (!strcmp(opt_path_get, "-"))
     opt_noprogress = opt_stream = TRUE;
 
   if (ac < 2)
@@ -105,14 +119,14 @@ int main(int ac, char* av[])
   }
 
   // download files
-  mega_session_watch_status(s, status_callback, NULL);
+  mega_session_watch_status(s, status_callback_get, NULL);
 
   for (i = 1; i < ac; i++)
   {
     gc_free gchar* path = tool_convert_filename(av[i], FALSE);
 
     // perform download
-    if (!mega_session_get_compat(s, opt_path, path, &local_err))
+    if (!mega_session_get_compat(s, opt_path_get, path, &local_err))
     {
       if (!opt_noprogress)
         g_print("\r" ESC_CLREOL "\n");
@@ -130,3 +144,4 @@ int main(int ac, char* av[])
   tool_fini(s);
   return status;
 }
+#include "main2.h"

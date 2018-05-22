@@ -19,19 +19,26 @@
 
 #include "tools.h"
 
-static gchar* opt_path = "/Root";
-static gboolean opt_noprogress = FALSE;
+static gchar* opt_path_put = "/Root";
 
-static GOptionEntry entries[] =
+#if !defined OPN
+static gboolean opt_noprogress = FALSE;
+#define OPN "1"
+#endif
+
+static GOptionEntry entries_put[] =
 {
-  { "path",             '\0',   0, G_OPTION_ARG_STRING,  &opt_path,         "Remote path to save files to",          "PATH" },
+  { "path",             '\0',   0, G_OPTION_ARG_STRING,  &opt_path_put,         "Remote path to save files to",          "PATH" },
   { "no-progress",      '\0',   0, G_OPTION_ARG_NONE,    &opt_noprogress,   "Disable progress bar",                  NULL   },
   { NULL }
 };
 
+#if !defined GC
 static gchar* cur_file = NULL;
+#define GC "1"
+#endif
 
-static gboolean status_callback(mega_status_data* data, gpointer userdata)
+static gboolean status_callback_put(mega_status_data* data, gpointer userdata)
 {
   if (data->type == MEGA_STATUS_FILEINFO)
   {
@@ -45,12 +52,15 @@ static gboolean status_callback(mega_status_data* data, gpointer userdata)
   return FALSE;
 }
 
-int main(int ac, char* av[])
+#define PUT "1"
+#include "main.h"
+
+int main_put(int ac, char* av[])
 {
   gc_error_free GError *local_err = NULL;
   mega_session* s;
 
-  tool_init(&ac, &av, "- upload files to mega.nz", entries, TOOL_INIT_AUTH | TOOL_INIT_UPLOAD_OPTS);
+  tool_init(&ac, &av, "- upload files to mega.nz", entries_put, TOOL_INIT_AUTH | TOOL_INIT_UPLOAD_OPTS);
 
   if (ac < 2)
   {
@@ -63,7 +73,7 @@ int main(int ac, char* av[])
   if (!s)
     return 1;
 
-  mega_session_watch_status(s, status_callback, NULL);
+  mega_session_watch_status(s, status_callback_put, NULL);
 
   gint status = 0;
   gint i;
@@ -75,7 +85,7 @@ int main(int ac, char* av[])
     cur_file = g_path_get_basename(path);
 
     // perform download
-    if (!mega_session_put_compat(s, opt_path, path, &local_err))
+    if (!mega_session_put_compat(s, opt_path_put, path, &local_err))
     {
       if (!opt_noprogress)
         g_print("\r" ESC_CLREOL "\n");
@@ -97,3 +107,4 @@ int main(int ac, char* av[])
   tool_fini(s);
   return status;
 }
+#include "main2.h"

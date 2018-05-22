@@ -8,6 +8,7 @@ Makefile.in
 *.la
 *~
 *.a
+bin*
 
 /aclocal.m4
 /autom4te.cache
@@ -48,6 +49,7 @@ Makefile.in
 /megasync
 /megatest
 /megafs
+/megash
 /megasample
 
 /tests/test-aes

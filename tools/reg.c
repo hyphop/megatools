@@ -26,7 +26,7 @@ static gboolean opt_register;
 static gchar* opt_verify;
 static gboolean opt_script;
 
-static GOptionEntry entries[] =
+static GOptionEntry entries_reg[] =
 {
   { "name",        'n',   0, G_OPTION_ARG_STRING,  &opt_name,       "Your real name",                                "NAME"     },
   { "email",       'e',   0, G_OPTION_ARG_STRING,  &opt_email,      "Your email (will be your username)",            "EMAIL"    },
@@ -91,14 +91,17 @@ err:
   return NULL;
 }
 
-int main(int ac, char* av[])
+#define  REG "1"
+#include "main.h"
+
+int main_reg(int ac, char* av[])
 {
   gc_error_free GError *local_err = NULL;
   mega_reg_state* state = NULL;
   gc_free gchar* signup_key = NULL;
   mega_session* s;
 
-  tool_init(&ac, &av, "LINK - register a new mega.nz account", entries, 0);
+  tool_init(&ac, &av, "LINK - register a new mega.nz account", entries_reg, 0);
 
   if (opt_verify && opt_register)
   {
@@ -204,3 +207,4 @@ err:
   tool_fini(s);
   return 1;
 }
+#include "main2.h"

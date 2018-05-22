@@ -27,7 +27,7 @@ static gboolean opt_dryrun;
 static gboolean opt_nofollow;
 static mega_session* s;
 
-static GOptionEntry entries[] =
+static GOptionEntry entries_copy[] =
 {
   { "remote",            'r',   0, G_OPTION_ARG_STRING,  &opt_remote_path,  "Remote directory",                 "PATH"  },
   { "local",             'l',   0, G_OPTION_ARG_STRING,  &opt_local_path,   "Local directory",                  "PATH"  },
@@ -38,7 +38,7 @@ static GOptionEntry entries[] =
   { NULL }
 };
 
-static gboolean status_callback(mega_status_data* data, gpointer userdata)
+static gboolean status_callback_copy(mega_status_data* data, gpointer userdata)
 {
   if (!opt_noprogress && data->type == MEGA_STATUS_PROGRESS)
     tool_show_progress("copying...", data);
@@ -153,7 +153,7 @@ static gboolean up_sync_dir(GFile* root, GFile* file, const gchar* remote_path)
 
 // download operation
 
-static gboolean dl_sync_file(mega_node* node, GFile* file, const gchar* remote_path)
+static gboolean dl_sync_file_copy(mega_node* node, GFile* file, const gchar* remote_path)
 {
   GError *local_err = NULL;
   gchar* local_path = g_file_get_path(file);
@@ -185,7 +185,7 @@ static gboolean dl_sync_file(mega_node* node, GFile* file, const gchar* remote_p
   return TRUE;
 }
 
-static gboolean dl_sync_dir(mega_node* node, GFile* file, const gchar* remote_path)
+static gboolean dl_sync_dir_copy(mega_node* node, GFile* file, const gchar* remote_path)
 {
   GError *local_err = NULL;
   gchar* local_path = g_file_get_path(file);
@@ -224,12 +224,12 @@ static gboolean dl_sync_dir(mega_node* node, GFile* file, const gchar* remote_pa
 
     if (child->type == MEGA_NODE_FILE)
     {
-      if (!dl_sync_file(child, child_file, child_remote_path))
+      if (!dl_sync_file_copy(child, child_file, child_remote_path))
         status = FALSE;
     }
     else
     {
-      if (!dl_sync_dir(child, child_file, child_remote_path))
+      if (!dl_sync_dir_copy(child, child_file, child_remote_path))
         status = FALSE;
     }
 
@@ -241,11 +241,13 @@ static gboolean dl_sync_dir(mega_node* node, GFile* file, const gchar* remote_pa
   return status;
 }
 
+#define CP "1"
+#include "main.h"
 // main program
 
-int main(int ac, char* av[])
+int main_copy(int ac, char* av[])
 {
-  tool_init(&ac, &av, "- synchronize local and remote mega.nz directories", entries, TOOL_INIT_AUTH | TOOL_INIT_UPLOAD_OPTS);
+  tool_init(&ac, &av, "- synchronize local and remote mega.nz directories", entries_copy, TOOL_INIT_AUTH | TOOL_INIT_UPLOAD_OPTS);
 
   if (!opt_local_path || !opt_remote_path)
   {
@@ -260,7 +262,7 @@ int main(int ac, char* av[])
     return 1;
   }
 
-  mega_session_watch_status(s, status_callback, NULL);
+  mega_session_watch_status(s, status_callback_copy, NULL);
 
   // check remote dir existence
   mega_node* remote_dir = mega_session_stat(s, opt_remote_path);
@@ -281,7 +283,7 @@ int main(int ac, char* av[])
 
   if (opt_download)
   {
-    if (!dl_sync_dir(remote_dir, local_file, opt_remote_path))
+    if (!dl_sync_dir_copy(remote_dir, local_file, opt_remote_path))
       status = 1;
   }
   else
@@ -308,3 +310,4 @@ err0:
   tool_fini(s);
   return 1;
 }
+#include "main2.h"

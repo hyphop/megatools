@@ -26,7 +26,7 @@ static gboolean opt_total;
 static gboolean opt_free;
 static gboolean opt_used;
 
-static GOptionEntry entries[] =
+static GOptionEntry entries_df[] =
 {
   { "human",         'h',   0, G_OPTION_ARG_NONE,    &opt_human,         "Use human readable formatting",    NULL       },
   { "mb",           '\0',   0, G_OPTION_ARG_NONE,    &opt_mb,            "Show numbers in MiB",              NULL       },
@@ -49,12 +49,15 @@ static gchar* format_size(guint64 size)
   return g_strdup_printf("%" G_GUINT64_FORMAT, size);
 }
 
-int main(int ac, char* av[])
+#define DF "1"
+#include "main.h"
+
+int main_df(int ac, char* av[])
 {
   GError *local_err = NULL;
   mega_session* s;
 
-  tool_init(&ac, &av, "- display mega.nz storage quotas/usage", entries, TOOL_INIT_AUTH);
+  tool_init(&ac, &av, "- display mega.nz storage quotas/usage", entries_df, TOOL_INIT_AUTH);
 
   if (opt_total || opt_free || opt_used)
   {
@@ -120,3 +123,4 @@ err:
   tool_fini(s);
   return 1;
 }
+#include "main2.h"

@@ -27,7 +27,7 @@ static gboolean opt_export;
 //static gboolean opt_color;
 static gboolean opt_header;
 
-static GOptionEntry entries[] =
+static GOptionEntry entries_ls[] =
 {
   { "names",         'n',   0, G_OPTION_ARG_NONE,    &opt_names,        "List names of files only (will be disabled if you specify multiple paths)",     NULL },
   { "recursive",     'R',   0, G_OPTION_ARG_NONE,    &opt_recursive,    "List files in subdirectories",                NULL },
@@ -49,14 +49,17 @@ static gint compare_node(mega_node* a, mega_node* b)
   return 0;
 }
 
-int main(int ac, char* av[])
+#define LS "1"
+#include "main.h"
+
+int main_ls(int ac, char* av[])
 {
   mega_session* s;
   gc_error_free GError *local_err = NULL;
   GSList *l = NULL, *i;
   gint j;
 
-  tool_init(&ac, &av, "- list files stored at mega.nz", entries, TOOL_INIT_AUTH);
+  tool_init(&ac, &av, "- list files stored at mega.nz", entries_ls, TOOL_INIT_AUTH);
 
   s = tool_start_session(TOOL_SESSION_OPEN);
   if (!s)
@@ -140,3 +143,4 @@ int main(int ac, char* av[])
   tool_fini(s);
   return 0;
 }
+#include "main2.h"
