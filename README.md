@@ -133,8 +133,7 @@ file. It is not expected to work on all distributions. Use the official tarball.
 
 On Debian, Ubuntu:
 
-    apt-get -y install build-essential libglib2.0-dev libssl-dev \
-    libcurl4-openssl-dev
+    apt-get -y install build-essential libglib2.0-dev libssl-dev libcurl4-openssl-dev
 
 Note: when you run into missing .so files, try building with 
 `./configure --disable-shared --enable-static` instead of plain `./configure`.
