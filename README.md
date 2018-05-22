@@ -12,7 +12,7 @@ the entire file.
 Megatools are robust and optimized for fast operation - as fast as Mega
 servers allow. Memory requirements and CPU utilization are kept at minimum.
 
-You can register account using a 'megareg' tool, with the benefit of having
+You can register account using a `megareg` tool, with the benefit of having
 true control of your encryption keys.
 
 Mega website can be found at https://mega.nz.
@@ -26,16 +26,15 @@ or PayPal: ahyechouchahquaachai@xff.cz.
 Tools
 =====
 
-  megareg      Register and verify a new mega account
-  megadf       Show your cloud storage space usage/quota
-  megals       List all remote files
-  megamkdir    Create remote directory
-  megarm       Remove remote file or directory
-  megaput      Upload individual files
-  megaget      Download individual files
-  megadl       Download file from a "public" Mega link
-               (doesn't require login)
-  megacopy     Upload or download a directory tree
++  `megareg`      Register and verify a new mega account
++  `megadf`       Show your cloud storage space usage/quota
++  `megals`       List all remote files
++  `megamkdir`    Create remote directory
++  `megarm`       Remove remote file or directory
++  `megaput`      Upload individual files
++  `megaget`      Download individual files
++  `megadl`       Download file from a "public" Mega link (doesn't require login)
++  `megacopy`     Upload or download a directory tree
 
 
 All of these tools do:
@@ -51,7 +50,7 @@ Usage
 
 See man pages for how to use individual tools and how to configure them:
 
-  man megatools
+    man megatools
 
 Man pages are also available online at:
 
@@ -77,7 +76,7 @@ On Windows, if you see weird characters in your megals output, you'll need
 to set correct CHARSET environment variable. For example on Czech Windows
 this would mean executing this command in cmd before using the tools:
 
-  set CHARSET=CP852
+    set CHARSET=CP852
 
 This is just a cosmetic issue. Internally, megatools always work with UTF-8
 file names, and even if the tool's terminal output is corrupted, files names
@@ -91,7 +90,7 @@ Thanks to Carl Moden, megatools is available in Homebrew (http://brew.sh/).
 
 You can therefore install megatools with:
 
-  brew install megatools
+    brew install megatools
 
 
 Installation on your favorite GNU/Linux distribution
@@ -134,23 +133,23 @@ file. It is not expected to work on all distributions. Use the official tarball.
 
 On Debian, Ubuntu:
 
-  apt-get -y install build-essential libglib2.0-dev libssl-dev \
+    apt-get -y install build-essential libglib2.0-dev libssl-dev \
     libcurl4-openssl-dev
 
-  Note: when you run into missing .so files, try building with 
-    `./configure --disable-shared --enable-static` instead of plain `./configure`.
+Note: when you run into missing .so files, try building with 
+`./configure --disable-shared --enable-static` instead of plain `./configure`.
 
 On Fedora:
 
-  yum -y install gcc make glib2-devel libcurl-devel openssl-devel gmp-devel tar
+    yum -y install gcc make glib2-devel libcurl-devel openssl-devel gmp-devel tar
 
 On OpenSUSE:
 
-  zypper -n install gcc make glib2-devel libcurl-devel openssl-devel gmp-devel
+    zypper -n install gcc make glib2-devel libcurl-devel openssl-devel gmp-devel
 
 On Arch Linux:
 
-  pacman -Sy --noconfirm --needed pkg-config gcc make glib2 curl gmp nettle
+    pacman -Sy --noconfirm --needed pkg-config gcc make glib2 curl gmp nettle
 
 
 Author
