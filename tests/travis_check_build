@@ -7,7 +7,9 @@ echo "[i] $0 BEGIN"
 
 ./autogen.sh
 
-#
+## ignore 
+## configure: error: a2x is required to build docs, install asciidoc
+## need `apt-get install asciidoc`
 
 set -e 
 
