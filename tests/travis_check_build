@@ -4,10 +4,15 @@
 
 echo "[i] $0 BEGIN"
 
-set -e 
 
 ./autogen.sh
+
+#
+
+set -e 
+
 ./configure --disable-docs
+
 make
 
 echo "[i] $0 END"
