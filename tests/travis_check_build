@@ -4,6 +4,8 @@
 
 echo "[i] $0 BEGIN"
 
+set -e 
+
 ./autogen.sh
 ./configure --disable-docs
 make
