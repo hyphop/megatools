@@ -35,6 +35,7 @@ Tools
 +  `megaget`      Download individual files
 +  `megadl`       Download file from a "public" Mega link (doesn't require login)
 +  `megacopy`     Upload or download a directory tree
++  `megash`       one multybinary like busybox 
 
 
 All of these tools do:
