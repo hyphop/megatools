@@ -2,9 +2,11 @@
 
 ## hyphop ##
 
+
 [ -d bin ] || mkdir bin
 cp megash bin/
 cd bin
+strip megash
 
 for c in copy df dl get ls mkdir put reg rm ; do
 
