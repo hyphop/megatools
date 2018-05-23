@@ -26,6 +26,7 @@ or PayPal: ahyechouchahquaachai@xff.cz.
 Tools
 =====
 
++  `megash`       one binary exec for everything like BusyBox, [more about megash](README.megash.md)
 +  `megareg`      Register and verify a new mega account
 +  `megadf`       Show your cloud storage space usage/quota
 +  `megals`       List all remote files
@@ -35,7 +36,6 @@ Tools
 +  `megaget`      Download individual files
 +  `megadl`       Download file from a "public" Mega link (doesn't require login)
 +  `megacopy`     Upload or download a directory tree
-+  `megash`       one multybinary like busybox 
 
 
 All of these tools do:
