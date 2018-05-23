@@ -63,7 +63,7 @@ int main(int ac, char* av[])
 	if (ac > 1) {
 	name = av[1];
 	} else {
-        fprintf(stderr,"[i] USAGE: %s [ ls | dl | get | rm | mkdir | copy | reg | df ]\n" , av[0]);
+        fprintf(stderr,"[i] USAGE: %s [ put | ls | dl | get | rm | mkdir | copy | reg | df ]\n" , av[0]);
 	    exit(1);
 	}
 	ac--;

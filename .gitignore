@@ -62,6 +62,7 @@ bin*
 /libmega.pc
 /*.tar.xz
 /*.tar.gz
+/*.gz
 
 /docs/*.1
 /docs/*.7

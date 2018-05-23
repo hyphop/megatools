@@ -15,3 +15,8 @@ for c in copy df dl get ls mkdir put reg rm ; do
     ln -sf megash mega$c
 
 done
+
+
+tar -czf../mega.tar.gz mega*
+gzip -c megash > ../mega.gz
+

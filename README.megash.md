@@ -4,11 +4,11 @@
 
 # USAGE
 
-     megash [ ls | dl | get | rm | mkdir | copy | reg | df ] @ARGS
+     megash [ put | ls | dl | get | rm | mkdir | copy | reg | df ] @ARGS
 
 or via symlinks `megaXXX` where 
     
-    X = [ ls | dl | get | rm | mkdir | copy | reg | df ]
+    X = [ put | ls | dl | get | rm | mkdir | copy | reg | df ]
 
 ## COMPILE 
  
@@ -37,4 +37,12 @@ bin/megarm	-> megash
 ## INSTALL
 
     cp bin/mega* /usr/bin
+
+## Config from STDIN
+
+now we can read config direct from STDIN, not only from files via `-c -` option
+
+### READ CONFIG FROM STDIN EXAMPLE
+
+    cat CONFIG | megash CMD -c - @ARGS
 
