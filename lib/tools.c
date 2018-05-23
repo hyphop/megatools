@@ -91,7 +91,7 @@ static gboolean opt_debug_callback(const gchar *option_name, const gchar *value,
 
 static GOptionEntry basic_options[] =
 {
-  { "config",             '\0',  0,                          G_OPTION_ARG_FILENAME, &opt_config,        "Load configuration from a file",               "PATH"  },
+  { "config",             'c',   0,                          G_OPTION_ARG_FILENAME, &opt_config,        "Load configuration from a file",               "PATH"  },
   { "ignore-config-file", '\0',  0,                          G_OPTION_ARG_NONE,     &opt_no_config,     "Disable loading " MEGA_RC_FILENAME,            NULL    },
   { "debug",              '\0',  G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, opt_debug_callback, "Enable debugging output",                      "OPTS"  },
   { "version",            '\0',  0,                          G_OPTION_ARG_NONE,     &opt_version,       "Show version information",                     NULL    },
@@ -411,35 +411,90 @@ void tool_init(gint* ac, gchar*** av, const gchar* tool_name, GOptionEntry* tool
 
   print_version();
 
-  if (!opt_no_config || opt_config)
-  {
-    gboolean status = TRUE;
+  if (!opt_no_config || opt_config) {
+//    gboolean status = TRUE;
+    gboolean status = FALSE;
     gc_key_file_unref GKeyFile* kf = g_key_file_new();
 
-    if (opt_config)
+
+//////// UGLY )))
+
+    if ( opt_config ) {
+    if ( opt_config[0] == '-' ) {
+
+    fprintf(stderr, "[i] try config from  %s\n", "STDIN");
+
+#define BUF_SIZE 4096
+    char config_str[BUF_SIZE];
+    config_str[0] = '\0';
+//    char* config_str = malloc(BUF_SIZE);
+
+    int len;
+    while(len  =read( 0 , config_str, BUF_SIZE) > 0)
     {
-      if (!g_key_file_load_from_file(kf, opt_config, 0, &local_err))
-      {
-        g_printerr("ERROR: Failed to open config file: %s: %s\n", opt_config, local_err->message);
-        g_clear_error(&local_err);
-        exit(1);
-      }
-    } 
-    else
-    {
-      status = g_key_file_load_from_file(kf, MEGA_RC_FILENAME, 0, NULL);
+	//fprintf(stderr, "> %d %d %s\n", len, strlen(config_str), config_str);
+    }
+
+//    if (
+     status = g_key_file_load_from_data (kf, config_str, strlen(config_str)-1 ,
+//		   0, &local_err))
+		   0, NULL)
+    ;
+
+	fprintf(stderr, "[i] config status %d\n", status);
+
+//    )
+//      {
+//        g_printerr("ERROR: Failed to open config file: %s: %s\n", opt_config, local_err->message);
+//        g_clear_error(&local_err);
+//        exit(1);
+//      }
+    } else {
+
+	fprintf(stderr, "[i] try config form %s\n", opt_config);
+	
+
+    //if (
+     status = g_key_file_load_from_file(kf, opt_config, 0, NULL);
+    //)
+//      {
+//        g_printerr("ERROR: Failed to open config file: %s: %s\n", opt_config, local_err->message);
+//        g_clear_error(&local_err);
+//        exit(1);
+//      }
+    	fprintf(stderr, "[i] config status %d\n", status);
+
+    }
+
+
+    }
+
+      if (!status) {
+
+	fprintf(stderr, "[i] try config form %s\n", MEGA_RC_FILENAME);
+        status = g_key_file_load_from_file(kf,MEGA_RC_FILENAME , 0, NULL);
+	fprintf(stderr, "[i] config status %d\n", status);
+
       if (!status)
       {
         gc_free gchar* tmp = g_build_filename(g_get_home_dir(), MEGA_RC_FILENAME, NULL);
+	fprintf(stderr, "[i] try config form %s\n", tmp);
         status = g_key_file_load_from_file(kf, tmp, 0, NULL);
+
+	fprintf(stderr, "[i] config status %d\n", status);
+
       }
-    }
+
+      }
+
 
     if (status)
     {
       // load username/password from ini file
       if (!opt_username)
         opt_username = g_key_file_get_string(kf, "Login", "Username", NULL);
+
+//	fprintf(stderr, "[i] %s\n", opt_username);
 
       if (!opt_password)
         opt_password = g_key_file_get_string(kf, "Login", "Password", NULL);
